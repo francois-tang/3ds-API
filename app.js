@@ -1,4 +1,4 @@
-//require("./models/db.js");
+require("./models/oracledb.js");
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 var path = require('path');
