@@ -1,6 +1,6 @@
-//require("./models/oracledb.js");
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+var createError = require('http-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 
@@ -10,20 +10,9 @@ const app = express();
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
-// Connect flash
-//app.use(flash());
-
-// Global variables
-//app.use(function(req, res, next) {
- // res.locals.success_msg = req.flash('success_msg');
- // res.locals.error_msg = req.flash('error_msg');
- // res.locals.error = req.flash('error');
- // next();
-//});
-
 // Routes
-app.use('/', require('./routes/index.router.js'));
-//app.use('/users', require('./routes/users.router.js'));
+app.use('/', require('./routers/index.router.js'));
+app.use('/api', require('./routers/emailPerformance.router.js'));
 //app.use('/movies', require('./routes/movies.router.js'));
 
 app.get('/', function(req, res) {
