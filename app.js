@@ -1,8 +1,7 @@
-require("./models/oracledb.js");
+//require("./models/oracledb.js");
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 var path = require('path');
-const flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 
 const app = express();
@@ -12,7 +11,7 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Connect flash
-app.use(flash());
+//app.use(flash());
 
 // Global variables
 //app.use(function(req, res, next) {
@@ -23,7 +22,7 @@ app.use(flash());
 //});
 
 // Routes
-//app.use('/', require('./routes/index.router.js'));
+app.use('/', require('./routes/index.router.js'));
 //app.use('/users', require('./routes/users.router.js'));
 //app.use('/movies', require('./routes/movies.router.js'));
 

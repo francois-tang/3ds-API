@@ -2,19 +2,23 @@
 //const ora = require("ora");
 const oracledb = require('oracledb');
 const config = require('config');
+const fs = require('fs');
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
+// Configuration du fichier
+const request = config.get("projectEmailPerformance.request");
+const fileDestination = config.get("projectEmailPerformance.fileDestination");
+const fileName = config.get("projectEmailPerformance.fileName");
 
-const   fs          = require('fs');
-
-const   myUser      = config.get("oracleDB.name");
-const   mypw        = config.get("oracleDB.mdp");
-const   host        = config.get("oracleDB.address");
+// Configuration du serveur Oracle
+const userName = config.get("oracleDB_MDA_ODS_PRD.name");
+const userPassword = config.get("oracleDB_MDA_ODS_PRD.mdp");
+const hostName = config.get("oracleDB_MDA_ODS_PRD.address");
 
 // Oracle libaries
 try {
-  oracledb.initOracleClient({libDir: 'C:\\Users\\FTG1\\Documents\\Projects\\API\\instantclient_21_8'});
+  oracledb.initOracleClient({libDir: './instantclient_21_8'});
 } catch (err) {
   console.error('Can\'t find Oracle Client libraries');
   console.error(err);
@@ -26,24 +30,24 @@ async function run() {
   let connection;
 
   try {
-    connection = await oracledb.getConnection( {
-      user          : myUser,
-      password      : mypw,
-      connectString : host
+    connection = await oracledb.getConnection({
+      user : userName,
+      password : userPassword,
+      connectString : hostName
     });
+    console.log("Connection at " + userName + " done");  
 
     const result = await connection.execute(
-      `SELECT *
-      FROM MDA_ODS.EMAIL_PERF_ODS
-      WHERE YEAR = '2023'`
+      request
     );
+    console.log("Request " + request + " done");  
     var json = JSON.stringify(result.rows);
 
-    fs.writeFile('C:/Users/FTG1/Desktop/test.json', json, 'utf8', function(erreur) {
+    fs.writeFile(fileDestination + fileName, json, 'utf8', function(erreur) {
       if (erreur) {
           console.log(erreur)};
-      console.log("File has been created");    
-  })
+      console.log("File " + fileName + " has been created at " + fileDestination);    
+    })
 
   } catch (err) {
     console.error(err);
